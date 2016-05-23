@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Comparator;
 
-public class UpdateMessageContent implements Serializable, Comparable<UpdateMessageContent> {
+public class UpdateMessageContent implements Serializable,
+		Comparable<UpdateMessageContent> {
 
 	/**
 	 * 
@@ -13,8 +14,16 @@ public class UpdateMessageContent implements Serializable, Comparable<UpdateMess
 
 	private Double currentConsumption;// in W
 	private Double possibleCut;// in W
-	private Double timeCut;// in sec
+	// time in which the consumer can react to a freq control event by giving
+	// some flexibility
+	private Double reactionTimeCut;// in sec
+	// time in which the consumer can participate by giving some flexibility
+	private Double timeCut;
 	private Double possibleIncrease;// in W
+	// time in which the consumer can react to a freq control event by giving
+	// some flexibility
+	private Double reactionTimeIncrease;
+	// time in which the consumer can participate by giving some flexibility
 	private Double timeIncrease;// in sed
 	private final Timestamp timeOfMessage;
 	private final String consumerSender;
@@ -35,20 +44,26 @@ public class UpdateMessageContent implements Serializable, Comparable<UpdateMess
 	/**
 	 * @param currentConsumption
 	 * @param possibleCut
+	 * @param reactionTimeCut
 	 * @param timeCut
 	 * @param possibleIncrease
+	 * @param reactionTimeIncrease
 	 * @param timeIncrease
+	 * @param consumerSender
 	 */
 	public UpdateMessageContent(Double currentConsumption, Double possibleCut,
-			Double timeCut, Double possibleIncrease, Double timeIncrease,
-			String sender) {
+			Double reactionTimeCut, Double timeCut, Double possibleIncrease,
+			Double reactionTimeIncrease, Double timeIncrease,
+			String consumerSender) {
 		super();
 		this.currentConsumption = currentConsumption;
 		this.possibleCut = possibleCut;
+		this.reactionTimeCut = reactionTimeCut;
 		this.timeCut = timeCut;
 		this.possibleIncrease = possibleIncrease;
+		this.reactionTimeIncrease = reactionTimeIncrease;
 		this.timeIncrease = timeIncrease;
-		this.consumerSender = sender;
+		this.consumerSender = consumerSender;
 		// NOW
 		this.timeOfMessage = new Timestamp(System.currentTimeMillis());
 	}
@@ -127,14 +142,33 @@ public class UpdateMessageContent implements Serializable, Comparable<UpdateMess
 		return 0;
 	}
 
-	/** Comparators **/
+	public Double getReactionTimeCut() {
+		return reactionTimeCut;
+	}
 
-	public static Comparator<UpdateMessageContent> SortByTimeCutComparator = new Comparator<UpdateMessageContent>() {
-		// if same time cut => goes to power cut
+	public void setReactionTimeCut(Double reactionTimeCut) {
+		this.reactionTimeCut = reactionTimeCut;
+	}
+
+	public Double getReactionTimeIncrease() {
+		return reactionTimeIncrease;
+	}
+
+	public void setReactionTimeIncrease(Double reactionTimeIncrease) {
+		this.reactionTimeIncrease = reactionTimeIncrease;
+	}
+
+	/** Comparators **/
+	public static Comparator<UpdateMessageContent> AscSortByTimeCutComparator = new Comparator<UpdateMessageContent>() {
+		// if same time cut => goes to reaction time, goes to power cut
 		public int compare(UpdateMessageContent o1, UpdateMessageContent o2) {
 			if (o1.getTimeCut() > o2.getTimeCut())
 				return 1;
 			if (o1.getTimeCut() < o2.getTimeCut())
+				return -1;
+			if (o1.getReactionTimeCut() > o2.getReactionTimeCut())
+				return 1;
+			if (o1.getReactionTimeCut() < o2.getReactionTimeCut())
 				return -1;
 			if (o1.getPossibleCut() > o2.getPossibleCut())
 				return 1;
@@ -144,19 +178,38 @@ public class UpdateMessageContent implements Serializable, Comparable<UpdateMess
 		}
 	};
 
-	public static Comparator<UpdateMessageContent> SortByTimeIncreaseComparator = new Comparator<UpdateMessageContent>() {
+	public static Comparator<UpdateMessageContent> DescSortByTimeCutComparator = new Comparator<UpdateMessageContent>() {
+		// if same time cut =>goes to reaction time => goes to power cut
+		public int compare(UpdateMessageContent o1, UpdateMessageContent o2) {
+			return 0 - AscSortByTimeCutComparator.compare(o1, o2);
+		}
+	};
+
+	public static Comparator<UpdateMessageContent> DescSortByTimeIncreaseComparator = new Comparator<UpdateMessageContent>() {
 		// order time increase first and then possible increase if the time is
 		// the same
 		public int compare(UpdateMessageContent o1, UpdateMessageContent o2) {
 			if (o1.getTimeIncrease() > o2.getTimeIncrease())
-				return 1;
+				return -1;
 			if (o1.getTimeIncrease() < o2.getTimeIncrease())
-				return -1;
-			if (o1.getPossibleIncrease() > o2.getPossibleIncrease())
 				return 1;
-			if (o1.getPossibleIncrease() < o2.getPossibleIncrease())
+			if (o1.getReactionTimeIncrease() > o2.getReactionTimeIncrease())
 				return -1;
+			if (o1.getReactionTimeIncrease() < o2.getReactionTimeIncrease())
+				return 1;
+			if (o1.getPossibleIncrease() > o2.getPossibleIncrease())
+				return -1;
+			if (o1.getPossibleIncrease() < o2.getPossibleIncrease())
+				return 1;
 			return 0;
+		}
+	};
+
+	public static Comparator<UpdateMessageContent> AscSortByTimeIncreaseComparator = new Comparator<UpdateMessageContent>() {
+		// order time increase first and then possible increase if the time is
+		// the same
+		public int compare(UpdateMessageContent o1, UpdateMessageContent o2) {
+			return 0 - DescSortByTimeIncreaseComparator.compare(o1, o2);
 		}
 	};
 

@@ -3,6 +3,7 @@ package fi.aalto.itia.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
 
 public class Utility {
 
@@ -20,5 +21,10 @@ public class Utility {
 			System.out.println("Exc: " + e.getMessage());
 		}
 		return properties;
+	}
+	
+	public static double getRandom() {
+		Random r = new Random();
+		return r.nextDouble();
 	}
 }

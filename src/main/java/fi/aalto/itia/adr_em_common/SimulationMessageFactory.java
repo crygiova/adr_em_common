@@ -36,16 +36,55 @@ public class SimulationMessageFactory {
 				ADR_EM_Common.STATUS_UPDATE_HEADER, content);
 	}
 
-	public static UpdateMessageContent generateUpdateMessage(
-			Double currentConsumption, Double possibleCut, Double timeCut,
-			Double possibleIncrease, Double timeIncrease, String sender) {
-		return new UpdateMessageContent(currentConsumption, possibleCut,
-				timeCut, possibleIncrease, timeIncrease, sender);
+	public static SimulationMessage getInstructionMessage(String sender,
+			String receiver, InstructionsMessageContent content) {
+		return new SimulationMessage(sender, receiver,
+				ADR_EM_Common.INSTRUCTIONS_HEADER, content);
 	}
-	
-	public static UpdateMessageContent generateRandomUpdateMessage( String sender) {
+
+	public static UpdateMessageContent getSemiRandomUpdateMessage(String sender) {
 		Random rand = new Random();
-		return new UpdateMessageContent(10 + 90 * rand.nextDouble(), 10 * rand.nextDouble(),
-				60* 15 + 15 * rand.nextDouble(), 10 * rand.nextDouble(), 60* 15 + 15 * rand.nextDouble(), sender);
+		double consumption = 10d + 90 * rand.nextDouble();
+		return new UpdateMessageContent(consumption, consumption,
+				60 * 15 + 15 * rand.nextDouble(),
+				60 * 15 + 15 * rand.nextDouble(), consumption,
+				60 * 15 + 15 * rand.nextDouble(),
+				60 * 15 + 15 * rand.nextDouble(), sender);
+
+	}
+
+	public static UpdateMessageContent getSemiRandomUpdateMessage(
+			String sender, boolean on) {
+		Random rand = new Random();
+		int minute = 60;
+		int time = 10;
+		double consumption = 70d;
+		if (on) {
+			return new UpdateMessageContent(consumption, consumption, minute
+					* time + minute * time * rand.nextDouble(), minute * time
+					+ minute * time * rand.nextDouble(), 0d, 0d, 0d, sender);
+		} else {
+			return new UpdateMessageContent(0d, 0d, 0d, 0d, consumption, minute
+					* time + minute * time * rand.nextDouble(), minute * time
+					+ minute * time * rand.nextDouble(), sender);
+		}
+	}
+
+	// public static UpdateMessageContent getRandomUpdateMessage(String sender)
+	// {
+	// Random rand = new Random();
+	// return new UpdateMessageContent(10 + 90 * rand.nextDouble(),
+	// 10 * rand.nextDouble(), 60 * 15 + 15 * rand.nextDouble(),
+	// 10 * rand.nextDouble(), 60 * 15 + 15 * rand.nextDouble(),
+	// sender);
+	// }
+
+	public static InstructionsMessageContent getInstructionsMessageContent(
+			Double aboveNominalIncrease, Double underNominalDecrease,
+			Double aboveNominalFrequency, Double underNominalFrequency,
+			String consumerReceiver) {
+		return new InstructionsMessageContent(underNominalDecrease,
+				underNominalFrequency, aboveNominalIncrease,
+				aboveNominalFrequency, consumerReceiver);
 	}
 }
