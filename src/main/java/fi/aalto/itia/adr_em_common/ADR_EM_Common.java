@@ -7,10 +7,15 @@ public class ADR_EM_Common {
 	public static final String ACCEPT_REG_HEADER = "DR_Register_Accept";
 	public static final String STATUS_UPDATE_HEADER = "Status_Update";
 	public static final String INSTRUCTIONS_HEADER = "Aggregator_Instructions";
+	public static final String AGG_TO_STATS_HEADER = "New_Update";
+	
+	
 
 	public static final String EMPTY = "";
 
 	public static final String AGG_INPUT_QUEUE = "AGG";
+	public static final String STATS_NAME_QUEUE = "Stats";
+
 
 	public static final int ONE_SECOND = 1000;
 	public static final int ONE_MIN = 60 * 1000;
