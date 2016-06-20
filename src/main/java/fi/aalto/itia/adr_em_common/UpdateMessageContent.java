@@ -10,7 +10,7 @@ public class UpdateMessageContent implements Serializable, Comparable<UpdateMess
 	 * 
 	 */
     private static final long serialVersionUID = 8089216898281578784L;
-    private static final int THRESHOLD_MIN = 2;
+    private static final int THRESHOLD_MIN = 5;
 
     private Double currentConsumption;// in W
     private Double possibleCut;// in W

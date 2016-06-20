@@ -43,6 +43,11 @@ public class SimulationMessageFactory {
 	return new SimulationMessage(sender, receiver, ADR_EM_Common.INSTRUCTIONS_HEADER, content);
     }
 
+    public static SimulationMessage getStatsToAggUpdateMessage(String sender, String receiver,
+	    StatsToAggUpdateContent content) {
+	return new SimulationMessage(sender, receiver, ADR_EM_Common.STATS_TO_AGG_HEADER, content);
+    }
+
     public static UpdateMessageContent getSemiRandomUpdateMessage(String sender) {
 	Random rand = new Random();
 	double consumption = 10d + 90 * rand.nextDouble();

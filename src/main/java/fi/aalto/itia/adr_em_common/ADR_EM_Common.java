@@ -8,6 +8,7 @@ public class ADR_EM_Common {
 	public static final String STATUS_UPDATE_HEADER = "Status_Update";
 	public static final String INSTRUCTIONS_HEADER = "Aggregator_Instructions";
 	public static final String AGG_TO_STATS_HEADER = "New_Update";
+	public static final String STATS_TO_AGG_HEADER = "StatsToAgg";
 	
 	
 
