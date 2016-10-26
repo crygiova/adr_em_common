@@ -21,7 +21,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
  * @author giovanc1
  *
  */
-public abstract class SimulationElement implements Runnable, Serializable {
+public abstract class SimulationElement implements Serializable, Runnable {
 
 	/**
 	 * 
