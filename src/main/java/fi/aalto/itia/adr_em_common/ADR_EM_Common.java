@@ -19,5 +19,6 @@ public class ADR_EM_Common {
 
     public static final int ONE_SECOND = 1000;
     public static final int ONE_MIN = 60 * 1000;
+    public static final int ONE_MIN_IN_SEC = 60;
 
 }
