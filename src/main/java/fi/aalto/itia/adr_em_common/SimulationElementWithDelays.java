@@ -24,7 +24,7 @@ import com.rabbitmq.client.AMQP.BasicProperties;
  * @author giovanc1
  *
  */
-public abstract class SimulationElement implements Serializable, Runnable {
+public abstract class SimulationElementWithDelays implements Serializable, Runnable {
 
     /**
 	 * 
@@ -52,14 +52,14 @@ public abstract class SimulationElement implements Serializable, Runnable {
     protected boolean keepGoing;
 
     // Delays var and const
-    private boolean commWithDelays = ADR_EM_Common.MSG_DELAYS;;
+    private boolean commWithDelays = ADR_EM_Common.MSG_DELAYS;
     private Random rand = new Random();
-    //constant delay in ms 
+    // constant delay in ms
     private static final int CONSTANT_DELAY = ADR_EM_Common.MSG_DELAY_CONSTANT;
-    //variable delay in seconds
+    // variable delay in seconds
     private static final int VAR_DELAY = ADR_EM_Common.MSG_DELAY_VARIABLE;
 
-    public SimulationElement(String inputQueueName) {
+    public SimulationElementWithDelays(String inputQueueName) {
 	super();
 	this.simulationToken = new SynchronousQueue<Integer>();
 	this.messageQueue = new LinkedBlockingQueue<SimulationMessage>();
@@ -170,7 +170,7 @@ public abstract class SimulationElement implements Serializable, Runnable {
 	String corrId = java.util.UUID.randomUUID().toString();
 
 	byte[] body;
-	try {    
+	try {
 	    Map<String, Object> headers = new HashMap<String, Object>();
 	    headers.put("x-delay", this.getMsgDelay());
 	    // headers.put("x-delay", counter * DELAY_MAX * DELAY_SEC);
@@ -178,15 +178,15 @@ public abstract class SimulationElement implements Serializable, Runnable {
 		    .headers(headers);
 	    props.correlationId(corrId).replyTo(this.inputQueueName).build();
 	    body = SimulationMessage.serialize(msg);
-	    //queue receiver as the routing key
+	    // queue receiver as the routing key
 	    dRChannel.basicPublish(EXCHANGE_NAME, queueReceiver, props.build(), body);
 	} catch (IOException e1) {
 	    // TODO Auto-generated catch block
 	    e1.printStackTrace();
 	}
     }
-    
- // Send a msg to a specified SimulationElement
+
+    // Send a msg to a specified SimulationElement
     /**
      * @param peer
      * @param msg
@@ -238,13 +238,12 @@ public abstract class SimulationElement implements Serializable, Runnable {
 	    e1.printStackTrace();
 	}
     }
-    
-    //get the delay for the message
-    private int getMsgDelay()
-    {
-	if(commWithDelays)
+
+    // get the delay for the message
+    private int getMsgDelay() {
+	if (commWithDelays)
 	    return CONSTANT_DELAY + rand.nextInt(VAR_DELAY);
-	//No delay return
+	// No delay return
 	return 0;
     }
 
