@@ -21,15 +21,16 @@ public class ADR_EM_Common {
     public static final int ONE_MIN_IN_SEC = 60;
     public static final int ONE_MIN = ONE_MIN_IN_SEC * ONE_SECOND;
     
-    
-    
     //CONFIGURATIONS OF THE APPLICATION
-    public static final double TARGET_FLEX = 50000d;
+    public static final double TARGET_FLEX = 25000d;
     public static final boolean MSG_DELAYS = true;
     public static final int MSG_DELAY_CONSTANT = ONE_SECOND;
-    public static final int MSG_DELAY_VARIABLE = ONE_SECOND;
+    public static final int MSG_DELAY_VARIABLE = 2 * ONE_SECOND;
     //delay for the fridges 1 = 0 delay
     public static final int FRIDGES_DELAY_CONSTANT = 2 *ONE_MIN_IN_SEC;
     public static final int FRIDGES_DELAY_VARIABLE = 2 *ONE_MIN_IN_SEC;
+    //configuration of the allocation algorithm
+    public static final boolean USE_POLICIES = true;
+    
 
 }
