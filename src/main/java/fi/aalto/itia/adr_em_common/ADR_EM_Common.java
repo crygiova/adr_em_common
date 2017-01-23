@@ -10,7 +10,8 @@ public class ADR_EM_Common {
     public static final String AGG_TO_STATS_HEADER = "New_Update";
     public static final String STATS_TO_AGG_HEADER = "StatsToAgg";
 
-    public static final String OUT_FILE_DIR = "C:/Users/giovanc1/workspace_sts/Aggregator_Web/";
+    //public static final String OUT_FILE_DIR = "C:/Users/giovanc1/workspace_sts/Aggregator_Web/";
+    public static final String OUT_FILE_DIR = "C:/Users/Christian/Documents/GitHub/Aggregator_Web/";
 
     public static final String EMPTY = "";
 
@@ -22,7 +23,7 @@ public class ADR_EM_Common {
     public static final int ONE_MIN = ONE_MIN_IN_SEC * ONE_SECOND;
     
     //CONFIGURATIONS OF THE APPLICATION
-    public static final double TARGET_FLEX = 25000d;
+    public static final double TARGET_FLEX = 50000d;
     public static final boolean MSG_DELAYS = true;
     public static final int MSG_DELAY_CONSTANT = ONE_SECOND;
     public static final int MSG_DELAY_VARIABLE = 2 * ONE_SECOND;
